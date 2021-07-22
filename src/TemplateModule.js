@@ -24,6 +24,7 @@ export function Main (props) {
   const [didDocument, setDIDDocument] = useState('');
   const [didDocumentHex, setDIDDocumentHex] = useState('');
   const [didDocumentHash, setDIDDocumentHash] = useState('');
+  const [humanDID, setHumanDID] = useState('');
   /*******************************************************************************/
 
 
@@ -83,10 +84,26 @@ export function Main (props) {
 
     /************************************************************************* */
     api.query.didModule.dIDDocument(didDocumentHash, (result) =>{
-      console.log("result" + result)
       console.log("Doc hash :- " + didDocumentHash);
+      console.log("***************************************************");
+      let dd = result[1];
+
+      var hex  = dd.toString();
+      var str = '';
+      for (var n = 0; n < hex.length; n += 2) {
+        str += String.fromCharCode(parseInt(hex.substr(n, 2), 16));
+      }
+
+      console.log(str)
+      setHumanDID(str);
+      console.log("result" + result)
+      console.log("time stamp :- " + result[0]);
+      console.log("did document :- " + result[1]);
+      console.log("block number :- " + result[2]);
+      console.log("account id :- " + result[3]);
+      console.log("***************************************************");
       setOwner(result[3].toString());
-      setBlock(result[0].toNumber());
+      setBlock(result[2].toNumber());
     }).then((unsub) => {
       unsubscribe = unsub;
     });
@@ -134,7 +151,8 @@ export function Main (props) {
                 `DID Document: ${didDocument}`,
                 `DID Document hash: ${didDocumentHash}`,
                 `Owner: ${owner}`, 
-                `Block: ${block}`
+                `Block: ${block}`,
+                `Human DID Doc: ${humanDID}`,
               ]
             } />
           {/* Show this message if the file is already claimed. */}
@@ -146,7 +164,8 @@ export function Main (props) {
                 `DID Document: ${didDocument}`,
                 `DID Document hash: ${didDocumentHash}`,
                 `Owner: ${owner}`, 
-                `Block: ${block}`
+                `Block: ${block}`,
+                `Human DID Doc: ${humanDID}`,
               ]
             }
           />
