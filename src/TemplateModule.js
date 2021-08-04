@@ -20,15 +20,11 @@ export function Main (props) {
   const [digest, setDigest] = useState('');
   const [owner, setOwner] = useState('');
 
-  /********************************************************************************/
   const [didDocument, setDIDDocument] = useState('');
   const [didDocumentHex, setDIDDocumentHex] = useState('');
   const [didDocumentHash, setDIDDocumentHash] = useState('');
-  /*******************************************************************************/
-
 
   const [block, setBlock] = useState(0);
-  console.log("State :- " + useState)
 
   // Our `FileReader()` which is accessible from our functions below.
   let fileReader;
@@ -49,11 +45,6 @@ export function Main (props) {
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
     setDIDDocumentHash(didDocumentHash);
-
-
-    console.log("DID Document :- " + didDocument + "\n")
-    console.log("DID Hex :- " + didDocumentHex  + "\n")
-    console.log("DID Hash :- " + didDocumentHash + "\n")
 
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
@@ -77,27 +68,20 @@ export function Main (props) {
   useEffect(() => {
     let unsubscribe;
 
-    // Polkadot-JS API query to the `proofs` storage item in our pallet.
-    // This is a subscription, so it will always get the latest value,
-    // even if it changes.
-
-    /************************************************************************* */
     api.query.didModule.dIDDocument(didDocumentHash, (result) =>{
-      console.log("result" + result)
-      console.log("Doc hash :- " + didDocumentHash);
-      setOwner(result[3].toString());
-      setBlock(result[0].toNumber());
+      
+      if (!result.isEmpty){
+        let res = JSON.parse(result);
+        let owner = res["sender_account_id"].toString();
+        let block_number = res["block_number"];
+
+        setOwner(owner);
+        setBlock(block_number);
+      }
     }).then((unsub) => {
       unsubscribe = unsub;
     });
-
-    /************************************************************************* */
-
-
     return () => unsubscribe && unsubscribe();
-    // This tells the React hook to update whenever the file digest changes
-    // (when a new file is chosen), or when the storage subscription says the
-    // value of the storage item has updated.
   }, 
   [didDocument,  didDocumentHash, api.query.didModule]);
   // [digest, api.query.didModule]);
@@ -106,10 +90,10 @@ export function Main (props) {
   function isClaimed () {
     // return false;
     let c =  block !== 0;
-    console.log("Type " + typeof block)
-    
 
-    console.log("Block :- " + block + " Claimed :- "  + c);
+    // console.log("Block :- " + block + "\nClaimed :- "  + c + "\nType " + typeof block);
+    let is_claimed = block !== 0;
+    console.log(isClaimed);
     return block !== 0;
   }
 
@@ -194,7 +178,6 @@ export function Main (props) {
 
 export default function TemplateModule (props) {
   const { api } = useSubstrate();
-  console.log(api.query)
   return (api.query.didModule && api.query.didModule.dIDDocument
     ? <Main {...props} /> : null);
 }

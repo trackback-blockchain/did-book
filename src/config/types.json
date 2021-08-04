@@ -1,1 +1,22 @@
-{}
+{
+    "DID" :{
+        "did_uri" :"Vec<u8>",
+        "did_document" :"Vec<u8>",
+        "block_number" :"BlockNumber",
+        "block_time_stamp" :"u64",
+        "did_ref" :"Vec<u8>",
+        "sender_account_id" :"AccountId",
+        "active" :"Option<bool>"
+    }
+,
+    "VerifiableCredential": {
+        "account_id": "AccountId",
+        "public_key": "Vec<8>",
+        "block_time_stamp":"u64",
+        "active":"bool"
+    },
+    "DIDs": {
+        "public_key":"Vec<8>",
+        "did_documents": "Vec<DID>"
+    }
+}
