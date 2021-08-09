@@ -33,7 +33,6 @@ export function Main (props) {
   const bufferToDigest = () => {
     let res = fileReader.result;
     
-    /*********************************************** */
     let didDocument = fileReader.result;
     let didDocumentHex= Array.from(
       new Uint8Array(didDocument))
@@ -53,7 +52,6 @@ export function Main (props) {
 
     const hash = blake2AsHex(content, 256);
 
-    //setDigest(res);
     setDigest(hash);
   };
 
@@ -72,11 +70,15 @@ export function Main (props) {
       
       if (!result.isEmpty){
         let res = JSON.parse(result);
+        console.log(result)
         let owner = res["sender_account_id"].toString();
         let block_number = res["block_number"];
 
         setOwner(owner);
         setBlock(block_number);
+      } else {
+        console.log(result);
+        setBlock(0);
       }
     }).then((unsub) => {
       unsubscribe = unsub;
@@ -84,15 +86,9 @@ export function Main (props) {
     return () => unsubscribe && unsubscribe();
   }, 
   [didDocument,  didDocumentHash, api.query.didModule]);
-  // [digest, api.query.didModule]);
 
   // We can say a file digest is claimed if the stored block number is not 0.
   function isClaimed () {
-    // return false;
-    let c =  block !== 0;
-
-    // console.log("Block :- " + block + "\nClaimed :- "  + c + "\nType " + typeof block);
-    let is_claimed = block !== 0;
     console.log(isClaimed);
     return block !== 0;
   }
