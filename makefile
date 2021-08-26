@@ -25,7 +25,7 @@ ecr-login:
 ecr: ecr-login
 	-aws ecr create-repository --repository-name did-book > /dev/null
 
-build:
+build: ecr-login
 	docker build -f ./Dockerfile --no-cache -t did-book:latest .
 	docker tag did-book:latest $(ECR_REPO_URL)/did-book:latest
 	docker push $(ECR_REPO_URL)/did-book:latest
