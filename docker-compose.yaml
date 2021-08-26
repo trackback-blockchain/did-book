@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: 533545012068.dkr.ecr.ap-southeast-2.amazonaws.com/did-book:latest
+    # build: 
+    #   context: .
+    #   dockerfile: Dockerfile
+    container_name: did-book
+    ports:
+      - "3000:3000"
+      - "8001:8001"
+
