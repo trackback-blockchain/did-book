@@ -3793,6 +3793,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"atob-lite@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "atob-lite@npm:2.0.0"
+  checksum: bb739d5e6573c94f8490fcb4fd23437be60ec07e4212588e4586cf65907eae6bde53b4f55749b983e24906c51c28dd42948a86e7a4c63711b0da261d7652a342
+  languageName: node
+  linkType: hard
+
 "atob@npm:^2.1.2":
   version: 2.1.2
   resolution: "atob@npm:2.1.2"
@@ -5897,6 +5904,7 @@ __metadata:
     semantic-ui-css: ^2.4.1
     semantic-ui-react: ^2.0.3
     semistandard: ^16.0.0
+    string-to-arraybuffer: ^1.0.2
   languageName: unknown
   linkType: soft
 
@@ -8611,6 +8619,13 @@ fsevents@^1.2.7:
   version: 0.3.2
   resolution: "is-arrayish@npm:0.3.2"
   checksum: 0687b6b8f2443a45116ce25d8b11979591af625bd8a7515f5d8de2fcb80979655bc9d1cbbd2146c34f2728a234d1ea81d397e06f1ae3feb02c8f6df16766a4a0
+  languageName: node
+  linkType: hard
+
+"is-base64@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "is-base64@npm:0.1.0"
+  checksum: 3cd6fb1a615cb1c9968d6a344a616dd5eed7297a42172521d24971ff380f42b677bed0f27d0f057f6914ebb97c79604fcf5f0f480600da5d3d4476f4b641d4b2
   languageName: node
   linkType: hard
 
@@ -14600,6 +14615,16 @@ resolve@1.18.1:
   version: 3.0.1
   resolution: "string-natural-compare@npm:3.0.1"
   checksum: c81b8adc4b91692e01eeb609d85c8fceeba14a41997e65fdc2e01fa9b0a9566663f6326a40436282eaa477ee6997c9096139a995c8220ffca79547c57e1a84e6
+  languageName: node
+  linkType: hard
+
+"string-to-arraybuffer@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "string-to-arraybuffer@npm:1.0.2"
+  dependencies:
+    atob-lite: ^2.0.0
+    is-base64: ^0.1.0
+  checksum: 3ef7219aa976e33f91a3b0a380234782963ce543580c68a33c6ac8fbd6fd2b4e6178d0df93a36495ee844bb5c004849f55c8bde785b5081ce9c68e3dfc6a3494
   languageName: node
   linkType: hard
 
