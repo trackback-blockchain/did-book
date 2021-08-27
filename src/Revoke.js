@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from './substrate-lib';
 import { TxButton } from './substrate-lib/components';
 import { Form, Input, Grid, Message, Button, button } from 'semantic-ui-react';
+import str2ab from 'string-to-arraybuffer';
+import { Keyring } from '@polkadot/api';
+// const { Keyring } = require('@polkadot/keyring');
 
 function Main (props) {
     const [didURI, setDIDURI] = useState('');
@@ -14,9 +17,8 @@ function Main (props) {
 
     const convert = (from, to) => str => Buffer.from(str, from).toString(to);
     const hexToUtf8 = convert('hex', 'utf8');
-    const { keyring } = useSubstrate();
-    // const keyring = new Keyring({ type: 'sr25519' });
-    // const account = keyring.addFromUri('//Alice');
+    const keyring = new Keyring({ type: 'sr25519' });
+    const account = keyring.addFromUri('//Alice', { name: 'Alice default' });
 
     const utils = {
         paramConversion: {
@@ -30,80 +32,68 @@ function Main (props) {
     };
     
     const isNumType = type => utils.paramConversion.num.some(el => type.indexOf(el) >= 0);
-
-    // const submit = async () => {
-    //     const fromAcct = await getFromAcct();
-    //     const transformed = transformParams(paramFields, inputParams);
-    //     // transformed can be empty parameters
-    
-    //     const txExecute = transformed ? api.tx[palletRpc][callable](...transformed): api.tx[palletRpc][callable]();
-    
-    //     const unsub = await txExecute.signAndSend(fromAcct, txResHandler)
-    //       .catch(txErrHandler);
-    //     setUnsub(() => unsub);
-    //   };
     
 
     const onRevokeDID = () => {
         console.log(didURI);
 
         // *************************************************************************************************
+        if(didURI) {
+            let bDIDURI = Array.from(new Uint8Array(str2ab(didURI)))
 
-        let bDIDURI = Array.from(new Uint8Array(str2ab(didURI)))
+            const palletRpc = "didModule";
+            const callable = "revokeDid";
 
-        const palletRpc = "didModule";
-        const callable = "revokeDid";
+            const inputParams = [bDIDURI];
+            const paramFields = [true];
 
-        const inputParams = [bDIDURI];
-        const paramFields = [true];
+            const paramVal = inputParams.map(inputParam => {
+                if (typeof inputParam === 'object' && inputParam !== null && typeof inputParam.value === 'string') {
+                    return inputParam.value.trim();
+                } else if (typeof inputParam === 'string') {
+                    return inputParam.trim();
+                }
+                return inputParam;
+            });
 
-        const paramVal = inputParams.map(inputParam => {
-            if (typeof inputParam === 'object' && inputParam !== null && typeof inputParam.value === 'string') {
-                return inputParam.value.trim();
-            } else if (typeof inputParam === 'string') {
-                return inputParam.trim();
-            }
-            return inputParam;
-        });
+            const params = paramFields.map((field, ind) => ({ ...field, value: paramVal[ind] || null }));
 
-        const params = paramFields.map((field, ind) => ({ ...field, value: paramVal[ind] || null }));
-
-        // let transformed = params.reduce((memo, { type = 'string', value }) => {
-        //         if (value == null || value === '') return (opts.emptyAsNull ? [...memo, null] : memo);
-    
-        //         let converted = value;
-    
-        //         if (type.indexOf('Vec<') >= 0) {
-        //             converted = converted.split(',').map(e => e.trim());
-        //             converted = converted.map(single => isNumType(type)
-        //                 ? (single.indexOf('.') >= 0 ? Number.parseFloat(single) : Number.parseInt(single))
-        //                 : single
-        //             );
-        //             return [...memo, converted];
-        //         }
-    
-        //         // Deal with a single value
-        //         if (isNumType(type)) {
-        //             converted = converted.indexOf('.') >= 0 ? Number.parseFloat(converted) : Number.parseInt(converted);
-        //         }
-        //         return [...memo, converted];
-        //     }, []);
-        // }
-        // const txExecute = api.tx[palletRpc][callable](...transformed);
-
-        // async () => {
-        //     const fromAcct = await getFromAcct();
-        //     const transformed = transformParams(paramFields, inputParams);
-        //     // transformed can be empty parameters
+            let transformed = params.reduce((memo, { type = 'string', value }) => {
+                    if (value == null || value === '') return (opts.emptyAsNull ? [...memo, null] : memo);
         
-        //     const txExecute = transformed ? api.tx[palletRpc][callable](...transformed): api.tx[palletRpc][callable]();
+                    let converted = value;
         
-        //     const unsub = await txExecute.signAndSend(fromAcct, txResHandler)
-        //       .catch(txErrHandler);
-        //     setUnsub(() => unsub);
-        //   }
-    
-        // *************************************************************************************************
+                    if (type.indexOf('Vec<') >= 0) {
+                        converted = converted.split(',').map(e => e.trim());
+                        converted = converted.map(single => isNumType(type)
+                            ? (single.indexOf('.') >= 0 ? Number.parseFloat(single) : Number.parseInt(single))
+                            : single
+                        );
+                        return [...memo, converted];
+                    }
+        
+                    // Deal with a single value
+                    if (isNumType(type)) {
+                        converted = converted.indexOf('.') >= 0 ? Number.parseFloat(converted) : Number.parseInt(converted);
+                    }
+                    return [...memo, converted];
+                }, []);
+            
+            // const txExecute = api.tx[palletRpc][callable](...transformed);
+            // const transformed = transformParams(paramFields, inputParams);
+            const txExecute =  api.tx[palletRpc][callable](...transformed);
+            txExecute.signAndSend(account, (result)=> {
+
+                console.log(`Current status is ${result.status}`);
+        
+                if (result.status.isInBlock) {
+                  console.log(`Transaction included at blockHash ${result.status.asInBlock}`);
+                } else if (result.status.isFinalized) {
+                  console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`);
+                }
+              }
+              )
+        }
       }
 
     const onSearchDID = () => {
@@ -150,17 +140,20 @@ function Main (props) {
                     color:'green'
             
                 }}/>
+            
             </div>
             
 
             <div>
-
-                    <button class="ui primary button" onClick={onSearchDID} style={{
-                        marginTop:"20px",
-                        
-                    }}>Search</button>
-
+                <button class="ui primary button" onClick={onSearchDID} style={{
+                    marginTop:"20px",
+                    
+                }}>Search</button>
+                <button class="ui primary button" onClick={onRevokeDID} style={{
+                    marginTop:"20px",
+                }}>Revoke</button>
             </div>
+             
             <div style={{
                 marginTop:"20px",
                 background:"#ffffe2",
@@ -169,13 +162,7 @@ function Main (props) {
                 <pre id="didDoc">
 
                 </pre>
-            </div>
-            <div>
-                <button class="ui primary button" onClick={onRevokeDID} style={{
-                    marginTop:"20px",
-                }}>Revoke</button>
-            </div>
-
+            </div>            
         </div>
     );
 }
