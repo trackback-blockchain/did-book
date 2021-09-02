@@ -35,9 +35,9 @@ export function Main (props) {
     
     let didDocument = fileReader.result;
 
-console.log(res)
-console.log(didDocument)
-console.log(typeof didDocument)
+    console.log(res)
+    console.log(didDocument)
+    console.log(typeof didDocument)
 
     let didDocumentHex= Array.from(
       new Uint8Array(didDocument))
@@ -48,9 +48,7 @@ console.log(typeof didDocument)
 
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
-    // setDIDDocumentHash("did:0xfac17a:065ed013-3af7-428f-899a-16ada615a6f7");
-    // setDIDDocumentHash("did:0xfac17a:7fd2e089-e1c1-465f-be81-ecf604321f50");
-    // setDIDDocumentHash("0x2a674c8ef2bc79f13faf22d4165ac99efc2cabe6e3194c0a58336fed7c56b1b3");
+    
     setDIDDocumentHash(didDocumentHash);
     
     // Turns the file content to a hexadecimal representation.
