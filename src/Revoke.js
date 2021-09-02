@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSubstrate } from './substrate-lib';
-import { TxButton } from './substrate-lib/components';
 import { Form, Input, Grid, Message, Button, button } from 'semantic-ui-react';
 import str2ab from 'string-to-arraybuffer';
 import { Keyring } from '@polkadot/api';
-// const { Keyring } = require('@polkadot/keyring');
 
 function Main (props) {
     const [didURI, setDIDURI] = useState('');
@@ -37,7 +35,6 @@ function Main (props) {
     const onRevokeDID = () => {
         console.log(didURI);
 
-        // *************************************************************************************************
         if(didURI) {
             let bDIDURI = Array.from(new Uint8Array(str2ab(didURI)))
 
@@ -79,8 +76,7 @@ function Main (props) {
                     return [...memo, converted];
                 }, []);
             
-            // const txExecute = api.tx[palletRpc][callable](...transformed);
-            // const transformed = transformParams(paramFields, inputParams);
+
             const txExecute =  api.tx[palletRpc][callable](...transformed);
             txExecute.signAndSend(account, (result)=> {
 
