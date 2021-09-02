@@ -15,6 +15,7 @@ import NodeInfo from './NodeInfo';
 import TemplateModule from './TemplateModule';
 import Transfer from './Transfer';
 import Upgrade from './Upgrade';
+import Revoke from './Revoke';
 
 function Main () {
   const [accountAddress, setAccountAddress] = useState(null);
@@ -64,8 +65,10 @@ function Main () {
           <Grid.Row>
             <TemplateModule accountPair={accountPair} />
             <Events />
+            
           </Grid.Row>
           <Grid.Row>
+          <Revoke />
             {/* <Interactor accountPair={accountPair} /> */}
           </Grid.Row>
           <Grid.Row stretched>

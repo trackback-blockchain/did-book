@@ -1,14 +1,13 @@
-// React and Semantic UI elements.
+
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Grid, Message } from 'semantic-ui-react';
-// Pre-built Substrate front-end utilities for connecting to a node
-// and making a transaction.
+
 import { useSubstrate } from './substrate-lib';
 import { TxButton } from './substrate-lib/components';
-// Polkadot-JS utilities for hashing data.
-import { blake2AsHex, mnemonicToEntropy } from '@polkadot/util-crypto';
 
-// Our main Proof Of Existence Component which is exported.
+import { blake2AsHex } from '@polkadot/util-crypto';
+
+
 export function Main (props) {
   // Establish an API to talk to our Substrate node.
   const { api } = useSubstrate();
@@ -34,11 +33,7 @@ export function Main (props) {
     let res = fileReader.result;
     
     let didDocument = fileReader.result;
-
-    console.log(res)
-    console.log(didDocument)
-    console.log(typeof didDocument)
-
+    let didDocument = "";
     let didDocumentHex= Array.from(
       new Uint8Array(didDocument))
       .map((b) => b.toString(16).padStart(2, '0'))
@@ -48,9 +43,9 @@ export function Main (props) {
 
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
-    
-    setDIDDocumentHash(didDocumentHash);
-    
+    setDIDDocumentHash("0x2a674c8ef2bc79f13faf22d4165ac99efc2cabe6e3194c0a58336fed7c56b1b3");
+    // setDIDDocumentHash(didDocumentHash);
+
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
       .map((b) => b.toString(16).padStart(2, '0'))
@@ -76,10 +71,10 @@ export function Main (props) {
       
       if (!result.isEmpty){
         let res = JSON.parse(result);
-        console.log("Result :-\n" + result)
+        console.log(result)
         let owner = res["sender_account_id"].toString();
         let block_number = res["block_number"];
-        let doc = res["did_document"];
+
         setOwner(owner);
         setBlock(block_number);
       } else {
