@@ -103,11 +103,11 @@ function Main (props) {
               let owner = res["sender_account_id"].toString();
               let block_number = res["block_number"];
  
-                let doc = hexToUtf8(res["did_document"].substr(2).toString())
+                // let doc = hexToUtf8(res["did_document"].substr(2).toString())
                 console.log(owner)
                 console.log(block_number)
-                console.log(doc)
-                document.getElementById("didDoc").innerHTML = JSON.stringify(JSON.parse(doc), undefined, 4);
+                // console.log(doc)
+                // document.getElementById("didDoc").innerHTML = JSON.stringify(JSON.parse(doc), undefined, 4);
             } else {
               console.log(result);
               document.getElementById("didDoc").innerHTML = "Unable to fetch the DID";

@@ -8,6 +8,8 @@ import { TxButton } from './substrate-lib/components';
 // Polkadot-JS utilities for hashing data.
 import { blake2AsHex, mnemonicToEntropy } from '@polkadot/util-crypto';
 import str2ab from 'string-to-arraybuffer';
+import { Keyring } from '@polkadot/api';
+
 // Our main Proof Of Existence Component which is exported.
 export function Main (props) {
   // Establish an API to talk to our Substrate node.
@@ -26,7 +28,7 @@ export function Main (props) {
 
   const [didDocumentMetadata, setDIDDocumentMetaData] = useState('');
   const [didResolutionMetadata, setdidResolutionMetadata] = useState('');
-
+  const [senderAccountId, setSenderAccountId] = useState('');
 
   const [block, setBlock] = useState(0);
 
@@ -38,6 +40,9 @@ export function Main (props) {
     let res = fileReader.result;
     
     let didDocument = fileReader.result;
+    
+    const keyring = new Keyring({ type: 'sr25519' });
+    const account = keyring.addFromUri('//Bob', { name: 'Bob default' });
 
     console.log(res)
     console.log(didDocument)
@@ -48,17 +53,21 @@ export function Main (props) {
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
 
-    let didDocumentHash = blake2AsHex(didDocumentHex);
+    let didDocumentHash = "did:0xfac17a:" + blake2AsHex(didDocumentHex);
 
     let didMetaDataJSON = {"key": "val"};
-    let didResolutionMedaData = {"key": "val"}
+    let didResolutionMedaDataJSON = {"key": "val"}
 
-    // Array.from(new Uint8Array(     str2ab(didURI)))
+    let a = Array.from(new Uint8Array( str2ab(JSON.stringify(didMetaDataJSON))));
+    let b = Array.from(new Uint8Array( str2ab(JSON.stringify(didResolutionMedaDataJSON))));
 
-    // setDIDDocument(didDocument);
-    // setDIDDocumentHex(didDocumentHex);
+    setDIDDocumentMetaData(a);
+    setdidResolutionMetadata(b);
+    setSenderAccountId(account);
     
-    // setDIDDocumentHash(didDocumentHash);
+    setDIDDocument(didDocument);
+    setDIDDocumentHex(didDocumentHex);
+    setDIDDocumentHash(didDocumentHash);
     
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
@@ -88,7 +97,7 @@ export function Main (props) {
         console.log("Result :-\n" + result)
         let owner = res["sender_account_id"].toString();
         let block_number = res["block_number"];
-        let doc = res["did_document"];
+        // let doc = res["did_document"];
         setOwner(owner);
         setBlock(block_number);
       } else {
@@ -160,7 +169,7 @@ export function Main (props) {
             attrs={{
               palletRpc: 'didModule',
               callable: 'insertDidDocument',
-              inputParams: [didDocument, didDocumentMetadata, didResolutionMetadata, senderAccountId, didHash],
+              inputParams: [didDocument, didDocumentMetadata, didResolutionMetadata, senderAccountId, didDocumentHash],
               paramFields: [true, true, true, true, true]
               // inputParams: [didDocument, didDocumentHash],
               // paramFields: [true, true]
