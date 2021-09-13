@@ -1,12 +1,12 @@
 {
     "DID" :{
-        "did_uri" :"Vec<u8>",
-        "did_document" :"Vec<u8>",
+        "did_resolution_metadata" :"Option<Vec<u8>>",
+        "did_document_metadata" :"Option<Vec<u8>>",
         "block_number" :"BlockNumber",
         "block_time_stamp" :"u64",
         "did_ref" :"Vec<u8>",
         "sender_account_id" :"AccountId",
-        "active" :"Option<bool>"
+
     }
 ,
     "VerifiableCredential": {

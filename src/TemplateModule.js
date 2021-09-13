@@ -7,7 +7,7 @@ import { useSubstrate } from './substrate-lib';
 import { TxButton } from './substrate-lib/components';
 // Polkadot-JS utilities for hashing data.
 import { blake2AsHex, mnemonicToEntropy } from '@polkadot/util-crypto';
-
+import str2ab from 'string-to-arraybuffer';
 // Our main Proof Of Existence Component which is exported.
 export function Main (props) {
   // Establish an API to talk to our Substrate node.
@@ -23,6 +23,10 @@ export function Main (props) {
   const [didDocument, setDIDDocument] = useState('');
   const [didDocumentHex, setDIDDocumentHex] = useState('');
   const [didDocumentHash, setDIDDocumentHash] = useState('');
+
+  const [didDocumentMetadata, setDIDDocumentMetaData] = useState('');
+  const [didResolutionMetadata, setdidResolutionMetadata] = useState('');
+
 
   const [block, setBlock] = useState(0);
 
@@ -46,10 +50,15 @@ export function Main (props) {
 
     let didDocumentHash = blake2AsHex(didDocumentHex);
 
-    setDIDDocument(didDocument);
-    setDIDDocumentHex(didDocumentHex);
+    let didMetaDataJSON = {"key": "val"};
+    let didResolutionMedaData = {"key": "val"}
+
+    // Array.from(new Uint8Array(     str2ab(didURI)))
+
+    // setDIDDocument(didDocument);
+    // setDIDDocumentHex(didDocumentHex);
     
-    setDIDDocumentHash(didDocumentHash);
+    // setDIDDocumentHash(didDocumentHash);
     
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
@@ -151,8 +160,10 @@ export function Main (props) {
             attrs={{
               palletRpc: 'didModule',
               callable: 'insertDidDocument',
-              inputParams: [didDocument, didDocumentHash],
-              paramFields: [true, true]
+              inputParams: [didDocument, didDocumentMetadata, didResolutionMetadata, senderAccountId, didHash],
+              paramFields: [true, true, true, true, true]
+              // inputParams: [didDocument, didDocumentHash],
+              // paramFields: [true, true]
             }}
           />
 

@@ -69,7 +69,7 @@ function Main () {
           </Grid.Row>
           <Grid.Row>
           <Revoke />
-            {/* <Interactor accountPair={accountPair} /> */}
+            <Interactor accountPair={accountPair} />
           </Grid.Row>
           <Grid.Row stretched>
             <Balances />
