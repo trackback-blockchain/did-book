@@ -96,18 +96,16 @@ function Main (props) {
         console.log(didURI);
 
         api.query.didModule.dIDDocument(didURI, (result) =>{
-      
+            console.log(didURI)
+            console.log(result);
             if (!result.isEmpty){
-              let res = JSON.parse(result);
-              console.log("Result :-\n" + result)
-              let owner = res["sender_account_id"].toString();
-              let block_number = res["block_number"];
- 
-                // let doc = hexToUtf8(res["did_document"].substr(2).toString())
+                let res = JSON.parse(result);
+                console.log("Result :-\n" + result)
+                let owner = res["sender_account_id"].toString();
+                let block_number = res["block_number"];
+
                 console.log(owner)
                 console.log(block_number)
-                // console.log(doc)
-                // document.getElementById("didDoc").innerHTML = JSON.stringify(JSON.parse(doc), undefined, 4);
             } else {
               console.log(result);
               document.getElementById("didDoc").innerHTML = "Unable to fetch the DID";
