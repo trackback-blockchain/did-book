@@ -51,26 +51,25 @@ export function Main (props) {
     console.log(account.address);
     console.log(account.publicKey)
     console.log("************************************************************");
-    // console.log(res)
-    // console.log(didDocument)
-    // console.log(typeof didDocument)
+
+    setSenderAccountId()
 
     let didDocumentHex= Array.from(
       new Uint8Array(didDocument))
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
 
-    let didHash = "did:0xfac17a:" + uuidv4();//blake2AsHex(didDocumentHex);
+    let didHash = "did:0xfac17a:" + blake2AsHex(didDocumentHex);
 
-    let didMetaDataJSON = {"key": "val"};
-    let didResolutionMedaDataJSON = {"key": "val"}
+    let didMetaDataJSON = {"DIDMetadataKey1": "DIDMetadataValue1"};
+    let didResolutionMedaDataJSON = {"DIDResolutionMedatadataKey1": "DIDResolutionMedatadataValue1"}
 
     let a = Array.from(new Uint8Array( str2ab(JSON.stringify(didMetaDataJSON))));
     let b = Array.from(new Uint8Array( str2ab(JSON.stringify(didResolutionMedaDataJSON))));
 
     setDIDDocumentMetaData(a);
     setdidResolutionMetadata(b);
-    setSenderAccountId(account);
+    setSenderAccountId(Array.from(new Uint8Array(str2ab(account.address))));
     
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
@@ -88,13 +87,10 @@ export function Main (props) {
       return Array.from(new Uint8Array(str2ab(element)))
     })
 
-    setPublicKeys(pks);
+    setPublicKeys(prepPKS);
     setDIDRef(Array.from(new Uint8Array(str2ab("https://ipfs.trackback.dev:8080/ipfs/QmcNYMJBhvbrH8oTo5QGNUFA5rhKpBVXHBpfiecxso7D8P"))));
 
-    // ****************************************************************
-    // let bDIDURI = Array.from(new Uint8Array(str2ab(didURI)))
-    // ****************************************************************
-    
+   
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
       .map((b) => b.toString(16).padStart(2, '0'))
@@ -123,7 +119,7 @@ export function Main (props) {
         console.log("Result :-\n" + result)
         let owner = res["sender_account_id"].toString();
         let block_number = res["block_number"];
-        // let doc = res["did_document"];
+
         setOwner(owner);
         setBlock(block_number);
       } else {

@@ -104,11 +104,23 @@ function Main (props) {
                 let owner = res["sender_account_id"].toString();
                 let block_number = res["block_number"];
 
+
+                let didResolutionMetadata = hexToUtf8(res.did_resolution_metadata.substr(2).toString());
+                let didMedatadata = hexToUtf8(res.did_document_metadata.substr(2).toString());
+                // console.log(didResolutionMetadata)
+                // let doc = hexToUtf8(res["did_document"].substr(2).toString())
+                // console.log(doc)
+                document.getElementById("didResMetadata").innerHTML = JSON.stringify(JSON.parse(didResolutionMetadata), undefined, 4);
+                document.getElementById("didMetaData").innerHTML = JSON.stringify(JSON.parse(didMedatadata), undefined, 4);
+
+
+
+
                 console.log(owner)
                 console.log(block_number)
             } else {
               console.log(result);
-              document.getElementById("didDoc").innerHTML = "Unable to fetch the DID";
+              document.getElementById("didResMetadata").innerHTML = "Unable to fetch the DID Resolution Metadata";
             }
           }
         );
@@ -153,9 +165,21 @@ function Main (props) {
                 background:"#ffffe2",
                 border:"1px solid green"
             }}>
-                <pre id="didDoc">
-
-                </pre>
+                <pre id="didDoc" style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#acffe2",
+                }}></pre>
+                <pre id="didResMetadata"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#0aa0FF",
+                }}></pre>
+                <pre id="didMetaData"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
             </div>            
         </div>
     );
