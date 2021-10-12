@@ -119,18 +119,6 @@ function Main (props) {
                     return "\n" + hexToUtf8(e.substr(2).toString())
                 });
 
-                // let len = res.public_keys.length;
-                // console.log("p")
-                // for (let i  = 0; i < len ; i ++) {
-                //     let k = res.public_keys[i];
-                //     // let p = ab2str(hexToUtf8(k.substr(2).toString()));
-                //     // console.log(p)
-                //     console.log((k.substr(2)));
-
-                //     // console.log();
-                // }
-                
-
                 document.getElementById("didResMetadata").innerHTML = "DID Resolution Metadata :-" + JSON.stringify(JSON.parse(didResolutionMetadata), undefined, 4);
                 document.getElementById("didMetaData").innerHTML = "DID Document Metadata :-" + JSON.stringify(JSON.parse(didMedatadata), undefined, 4);
                 document.getElementById("publicKeys").innerHTML = "Public Keys :-" + publicKeys;
