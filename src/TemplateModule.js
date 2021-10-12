@@ -69,7 +69,8 @@ export function Main (props) {
 
     setDIDDocumentMetaData(a);
     setdidResolutionMetadata(b);
-    setSenderAccountId(Array.from(new Uint8Array(str2ab(account.address))));
+    setSenderAccountId(account.address);
+    // setSenderAccountId(Array.from(new Uint8Array(str2ab(account.address))));
     
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
@@ -87,7 +88,10 @@ export function Main (props) {
       return Array.from(new Uint8Array(str2ab(element)))
     })
 
-    setPublicKeys(prepPKS);
+    // setPublicKeys(prepPKS);
+    setPublicKeys(pks);
+
+
     setDIDRef(Array.from(new Uint8Array(str2ab("https://ipfs.trackback.dev:8080/ipfs/QmcNYMJBhvbrH8oTo5QGNUFA5rhKpBVXHBpfiecxso7D8P"))));
 
    

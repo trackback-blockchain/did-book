@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from './substrate-lib';
 import { Form, Input, Grid, Message, Button, button } from 'semantic-ui-react';
 import str2ab from 'string-to-arraybuffer';
+import ab2str from 'arraybuffer-to-string';
 import { Keyring } from '@polkadot/api';
 
 function Main (props) {
@@ -107,16 +108,40 @@ function Main (props) {
 
                 let didResolutionMetadata = hexToUtf8(res.did_resolution_metadata.substr(2).toString());
                 let didMedatadata = hexToUtf8(res.did_document_metadata.substr(2).toString());
-                // console.log(didResolutionMetadata)
-                // let doc = hexToUtf8(res["did_document"].substr(2).toString())
-                // console.log(doc)
-                document.getElementById("didResMetadata").innerHTML = JSON.stringify(JSON.parse(didResolutionMetadata), undefined, 4);
-                document.getElementById("didMetaData").innerHTML = JSON.stringify(JSON.parse(didMedatadata), undefined, 4);
+                let blockNumber = res.block_number;
+                let blockTimeStamp = res.block_time_stamp;
+                let updatedTimeStamp = res.updated_timestamp;
+                let didRef = hexToUtf8(res.did_ref.substr(2).toString());
+                let senderAccountId = hexToUtf8(res.sender_account_id.substr(2).toString());
 
 
+                let publicKeys = res.public_keys.map(function(e){
+                    return "\n" + hexToUtf8(e.substr(2).toString())
+                });
 
+                // let len = res.public_keys.length;
+                // console.log("p")
+                // for (let i  = 0; i < len ; i ++) {
+                //     let k = res.public_keys[i];
+                //     // let p = ab2str(hexToUtf8(k.substr(2).toString()));
+                //     // console.log(p)
+                //     console.log((k.substr(2)));
 
-                console.log(owner)
+                //     // console.log();
+                // }
+                
+
+                document.getElementById("didResMetadata").innerHTML = "DID Resolution Metadata :-" + JSON.stringify(JSON.parse(didResolutionMetadata), undefined, 4);
+                document.getElementById("didMetaData").innerHTML = "DID Document Metadata :-" + JSON.stringify(JSON.parse(didMedatadata), undefined, 4);
+                document.getElementById("publicKeys").innerHTML = "Public Keys :-" + publicKeys;
+                document.getElementById("senderAccount").innerHTML = "Sender Account :-" + senderAccountId;
+                document.getElementById("didRef").innerHTML = "DID CID :-" + didRef;
+                document.getElementById("blockNumber").innerHTML = "Block Number :-" + blockNumber;
+                document.getElementById("blockTimeStamp").innerHTML = "Block Timestamp :-" + blockTimeStamp;
+                document.getElementById("updatedTimeStamp").innerHTML = "Updated timestamp :-" + updatedTimeStamp;
+
+                console.log("Owner Hex :" + owner)
+                console.log(hexToUtf8(owner.substr(2).toString()))
                 console.log(block_number)
             } else {
               console.log(result);
@@ -176,6 +201,37 @@ function Main (props) {
                     background:"#0aa0FF",
                 }}></pre>
                 <pre id="didMetaData"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+
+                <pre id="blockNumber"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="blockTimeStamp"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="updatedTimeStamp"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="senderAccount"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="didRef"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="publicKeys"style={{
                     marginTop:"30px",
                     marginBottom: "30px",
                     background:"#ccffe2",
