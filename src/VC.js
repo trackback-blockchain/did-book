@@ -21,7 +21,7 @@ export function Main (props) {
 
   const [didDocument, setDIDDocument] = useState('');
   const [didDocumentHex, setDIDDocumentHex] = useState('');
-  const [didDocumentHash, setDIDDocumentHash] = useState('');
+  const [didHash, setDIDDocumentHash] = useState('');
 
   const [block, setBlock] = useState(0);
 
@@ -39,12 +39,12 @@ export function Main (props) {
       .map((b) => b.toString(16).padStart(2, '0'))
       .join('');
 
-    let didDocumentHash = blake2AsHex(didDocumentHex);
+    let didHash = blake2AsHex(didDocumentHex);
 
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
     setDIDDocumentHash("0x2a674c8ef2bc79f13faf22d4165ac99efc2cabe6e3194c0a58336fed7c56b1b3");
-    // setDIDDocumentHash(didDocumentHash);
+    // setDIDDocumentHash(didHash);
 
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
@@ -67,7 +67,7 @@ export function Main (props) {
   useEffect(() => {
     let unsubscribe;
 
-    api.query.didModule.dIDDocument(didDocumentHash, (result) =>{
+    api.query.didModule.dIDDocument(didHash, (result) =>{
       
       if (!result.isEmpty){
         let res = JSON.parse(result);
@@ -86,7 +86,7 @@ export function Main (props) {
     });
     return () => unsubscribe && unsubscribe();
   }, 
-  [didDocument,  didDocumentHash, api.query.didModule]);
+  [didDocument,  didHash, api.query.didModule]);
 
   // We can say a file digest is claimed if the stored block number is not 0.
   function isClaimed () {
@@ -99,7 +99,7 @@ export function Main (props) {
     <Grid.Column>
       <h1>DID Upload</h1>
       {/* Show warning or success message if the file is or is not claimed. */}
-      <Form success={!!didDocumentHash && !isClaimed()} warning={isClaimed()}>
+      <Form success={!!didHash && !isClaimed()} warning={isClaimed()}>
         <Form.Field>
           {/* File selector with a callback to `handleFileChosen`. */}
           <Input
@@ -113,7 +113,7 @@ export function Main (props) {
           <Message success header='File Digest Unclaimed'  list={
               [
                 `DID Document: ${didDocument}`,
-                `DID Document hash: ${didDocumentHash}`,
+                `DID Document hash: ${didHash}`,
                 `Owner: ${owner}`, 
                 `Block: ${block}`
               ]
@@ -125,7 +125,7 @@ export function Main (props) {
             list={
               [
                 `DID Document: ${didDocument}`,
-                `DID Document hash: ${didDocumentHash}`,
+                `DID Document hash: ${didHash}`,
                 `Owner: ${owner}`, 
                 `Block: ${block}`
               ]
@@ -141,12 +141,12 @@ export function Main (props) {
             label={'Create DID'}
             setStatus={setStatus}
             type='SIGNED-TX'
-            disabled={isClaimed() || !didDocumentHash}
+            disabled={isClaimed() || !didHash}
 
             attrs={{
               palletRpc: 'didModule',
               callable: 'insertDidDocument',
-              inputParams: [didDocument, didDocumentHash],
+              inputParams: [didDocument, didHash],
               paramFields: [true, true]
             }}
           />
@@ -160,7 +160,7 @@ export function Main (props) {
             attrs={{
               palletRpc: 'didModule',
               callable: 'revokeDid',
-              inputParams: [didDocumentHash],
+              inputParams: [didHash],
               paramFields: [true]
             }}
           />

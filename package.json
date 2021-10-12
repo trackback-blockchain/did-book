@@ -25,6 +25,7 @@
     "@polkadot/ui-settings": "^0.69.1",
     "@polkadot/util": "^5.6.3",
     "@polkadot/util-crypto": "^5.6.3",
+    "arraybuffer-to-string": "^1.0.2",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.5",
     "react": "^16.14.0",
@@ -33,7 +34,8 @@
     "react-scripts": "^4.0.2",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "string-to-arraybuffer": "^1.0.2"
+    "string-to-arraybuffer": "^1.0.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "eslint": "^7.20.0",

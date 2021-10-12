@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSubstrate } from './substrate-lib';
 import { Form, Input, Grid, Message, Button, button } from 'semantic-ui-react';
 import str2ab from 'string-to-arraybuffer';
+import ab2str from 'arraybuffer-to-string';
 import { Keyring } from '@polkadot/api';
 
 function Main (props) {
@@ -96,21 +97,43 @@ function Main (props) {
         console.log(didURI);
 
         api.query.didModule.dIDDocument(didURI, (result) =>{
-      
+            console.log(didURI)
+            console.log(result);
             if (!result.isEmpty){
-              let res = JSON.parse(result);
-              console.log("Result :-\n" + result)
-              let owner = res["sender_account_id"].toString();
-              let block_number = res["block_number"];
- 
-                let doc = hexToUtf8(res["did_document"].substr(2).toString())
-                console.log(owner)
+                let res = JSON.parse(result);
+                console.log("Result :-\n" + result)
+                let owner = res["sender_account_id"].toString();
+                let block_number = res["block_number"];
+
+
+                let didResolutionMetadata = hexToUtf8(res.did_resolution_metadata.substr(2).toString());
+                let didMedatadata = hexToUtf8(res.did_document_metadata.substr(2).toString());
+                let blockNumber = res.block_number;
+                let blockTimeStamp = res.block_time_stamp;
+                let updatedTimeStamp = res.updated_timestamp;
+                let didRef = hexToUtf8(res.did_ref.substr(2).toString());
+                let senderAccountId = hexToUtf8(res.sender_account_id.substr(2).toString());
+
+
+                let publicKeys = res.public_keys.map(function(e){
+                    return "\n" + hexToUtf8(e.substr(2).toString())
+                });
+
+                document.getElementById("didResMetadata").innerHTML = "DID Resolution Metadata :-" + JSON.stringify(JSON.parse(didResolutionMetadata), undefined, 4);
+                document.getElementById("didMetaData").innerHTML = "DID Document Metadata :-" + JSON.stringify(JSON.parse(didMedatadata), undefined, 4);
+                document.getElementById("publicKeys").innerHTML = "Public Keys :-" + publicKeys;
+                document.getElementById("senderAccount").innerHTML = "Sender Account :-" + senderAccountId;
+                document.getElementById("didRef").innerHTML = "DID CID :-" + didRef;
+                document.getElementById("blockNumber").innerHTML = "Block Number :-" + blockNumber;
+                document.getElementById("blockTimeStamp").innerHTML = "Block Timestamp :-" + blockTimeStamp;
+                document.getElementById("updatedTimeStamp").innerHTML = "Updated timestamp :-" + updatedTimeStamp;
+
+                console.log("Owner Hex :" + owner)
+                console.log(hexToUtf8(owner.substr(2).toString()))
                 console.log(block_number)
-                console.log(doc)
-                document.getElementById("didDoc").innerHTML = JSON.stringify(JSON.parse(doc), undefined, 4);
             } else {
               console.log(result);
-              document.getElementById("didDoc").innerHTML = "Unable to fetch the DID";
+              document.getElementById("didResMetadata").innerHTML = "Unable to fetch the DID Resolution Metadata";
             }
           }
         );
@@ -155,9 +178,52 @@ function Main (props) {
                 background:"#ffffe2",
                 border:"1px solid green"
             }}>
-                <pre id="didDoc">
+                <pre id="didDoc" style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#acffe2",
+                }}></pre>
+                <pre id="didResMetadata"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#0aa0FF",
+                }}></pre>
+                <pre id="didMetaData"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
 
-                </pre>
+                <pre id="blockNumber"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="blockTimeStamp"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="updatedTimeStamp"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="senderAccount"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="didRef"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
+                <pre id="publicKeys"style={{
+                    marginTop:"30px",
+                    marginBottom: "30px",
+                    background:"#ccffe2",
+                }}></pre>
             </div>            
         </div>
     );
