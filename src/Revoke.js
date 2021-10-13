@@ -68,8 +68,7 @@ function Main (props) {
         
         let opts = { emptyAsNull: true };
         const params = paramFields.map((field, ind) => ({ ...field, value: paramVal[ind] || null }));
-        console.log("*****************" + paramVal)
-        console.log("*****************" + params)
+
         let transformed = params.reduce((memo, { type = 'string', value }) => {
             if (value == null || value === '') return (opts.emptyAsNull ? [...memo, null] : memo);
 
@@ -103,7 +102,6 @@ function Main (props) {
             }
             }
         )
-        //******************************************************************* */
     }
 
     const onRevokeDID = () => {
