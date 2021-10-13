@@ -8,10 +8,10 @@ import { Keyring } from '@polkadot/api';
 function Main (props) {
     const [didURI, setDIDURI] = useState('');
 
-    const [didResolutionMetadata, setDIDResolutionMetadata] = useState('');
-    const [didDocumentMetadata, setDIDDocumentMetadata] = useState('');
-    const [publiKeys, setPublicKeys] = useState('');
-    const [didRef, setDIDRef] = useState('');
+    const [drData, setDIDResolutionMetadata] = useState('');
+    const [ddData, setDIDDocumentMetadata] = useState('');
+    const [pks, setPublicKeys] = useState('');
+    const [dr, setDIDRef] = useState('');
 
     const { api } = useSubstrate();
 
@@ -33,20 +33,40 @@ function Main (props) {
     
     const isNumType = type => utils.paramConversion.num.some(el => type.indexOf(el) >= 0);
     
+
+    const toVecU8 = (param) => {
+        return Array.from(new Uint8Array( str2ab(JSON.stringify(param))))
+    }
+
     const onUpdateDID = () => {
-        
-        setDIDDocumentMetadata(Array.from(new Uint8Array(str2ab(didDocumentMetadata))));
-        setDIDResolutionMetadata(Array.from(new Uint8Array(str2ab(didResolutionMetadata))));
-        setDIDRef(Array.from(new Uint8Array(str2ab(didRef))));
-        setPublicKeys(publiKeys.split(","));
+        let dURI = Array.from(new Uint8Array(str2ab(didURI)));
+
+        console.log(
+            "INFORMATION \n" + 
+            "DID URI:- " + dURI + "\n" + 
+            "DID Resolution Metadata:- " + drData + 
+            "\n" + "DID Document Metadata:-" + ddData + 
+            "\n" + "DID Ref :- " + dr + 
+            "\n" + "publicKeys :- " + pks
+            )
+
+
+        // setDIDDocumentMetadata(Array.from(new Uint8Array(str2ab(ddData))));
+        // setDIDResolutionMetadata(Array.from(new Uint8Array(str2ab(drData))));
+        // setDIDRef(Array.from(new Uint8Array(str2ab(dr))));
+
+        // setPublicKeys(pks.split(","));
+        // let pp = pks.split(",")
+        // let kl = "A,C".split(",")
+        console.log(pks.split(","))
+        // console.log(kl)
 
         const palletRpc = "didModule";
         const callable = "updateDid";
+  
+        const inputParams = [dURI, toVecU8(drData), toVecU8(ddData), Array.from(new Uint8Array(str2ab(dr))), pks.split(",")];
+        const paramFields = [true, true,true,true,true];
 
-        const inputParams = [didResolutionMetadata, didResolutionMetadata, publiKeys, didRef];
-        const paramFields = [true,true,true,true];
-
-        //******************************************************************* */
         const paramVal = inputParams.map(inputParam => {
             if (typeof inputParam === 'object' && inputParam !== null && typeof inputParam.value === 'string') {
                 return inputParam.value.trim();
@@ -56,7 +76,11 @@ function Main (props) {
             return inputParam;
         });
 
+        
+        let opts = { emptyAsNull: true };
         const params = paramFields.map((field, ind) => ({ ...field, value: paramVal[ind] || null }));
+        console.log("*****************" + paramVal)
+        console.log("*****************" + params)
         let transformed = params.reduce((memo, { type = 'string', value }) => {
             if (value == null || value === '') return (opts.emptyAsNull ? [...memo, null] : memo);
 
@@ -332,9 +356,9 @@ function Main (props) {
                <br/>
             </div>      
             <div>
-                <button class="ui primary button"  style={{
+                <button class="ui primary button" onClick={onUpdateDID}
+                  style={{
                     marginTop:"20px",
-                    
                 }}>Update</button>
             </div>  
             <br/>   
