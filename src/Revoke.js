@@ -7,12 +7,13 @@ import { Keyring } from '@polkadot/api';
 
 function Main (props) {
     const [didURI, setDIDURI] = useState('');
-    const [owner, setOwner] = useState('');
-    const [blockNumber, setBlockNumber] = useState('');
-    const [didDocument, setDIDDocument] = useState('');
+
+    const [didResolutionMetadata, setDIDResolutionMetadata] = useState('');
+    const [didDocumentMetadata, setDIDDocumentMetadata] = useState('');
+    const [publiKeys, setPublicKeys] = useState('');
+    const [didRef, setDIDRef] = useState('');
 
     const { api } = useSubstrate();
-    const { accountPair } = props;
 
     const convert = (from, to) => str => Buffer.from(str, from).toString(to);
     const hexToUtf8 = convert('hex', 'utf8');
@@ -32,6 +33,65 @@ function Main (props) {
     
     const isNumType = type => utils.paramConversion.num.some(el => type.indexOf(el) >= 0);
     
+    const onUpdateDID = () => {
+        
+        setDIDDocumentMetadata(Array.from(new Uint8Array(str2ab(didDocumentMetadata))));
+        setDIDResolutionMetadata(Array.from(new Uint8Array(str2ab(didResolutionMetadata))));
+        setDIDRef(Array.from(new Uint8Array(str2ab(didRef))));
+        setPublicKeys(publiKeys.split(","));
+
+        const palletRpc = "didModule";
+        const callable = "updateDid";
+
+        const inputParams = [didResolutionMetadata, didResolutionMetadata, publiKeys, didRef];
+        const paramFields = [true,true,true,true];
+
+        //******************************************************************* */
+        const paramVal = inputParams.map(inputParam => {
+            if (typeof inputParam === 'object' && inputParam !== null && typeof inputParam.value === 'string') {
+                return inputParam.value.trim();
+            } else if (typeof inputParam === 'string') {
+                return inputParam.trim();
+            }
+            return inputParam;
+        });
+
+        const params = paramFields.map((field, ind) => ({ ...field, value: paramVal[ind] || null }));
+        let transformed = params.reduce((memo, { type = 'string', value }) => {
+            if (value == null || value === '') return (opts.emptyAsNull ? [...memo, null] : memo);
+
+            let converted = value;
+
+            if (type.indexOf('Vec<') >= 0) {
+                converted = converted.split(',').map(e => e.trim());
+                converted = converted.map(single => isNumType(type)
+                    ? (single.indexOf('.') >= 0 ? Number.parseFloat(single) : Number.parseInt(single))
+                    : single
+                );
+                return [...memo, converted];
+            }
+
+            // Deal with a single value
+            if (isNumType(type)) {
+                converted = converted.indexOf('.') >= 0 ? Number.parseFloat(converted) : Number.parseInt(converted);
+            }
+            return [...memo, converted];
+        }, []);
+
+        const txExecute =  api.tx[palletRpc][callable](...transformed);
+        txExecute.signAndSend(account, (result)=> {
+
+            console.log(`Current status is ${result.status}`);
+    
+            if (result.status.isInBlock) {
+              console.log(`Transaction included at blockHash ${result.status.asInBlock}`);
+            } else if (result.status.isFinalized) {
+              console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`);
+            }
+            }
+        )
+        //******************************************************************* */
+    }
 
     const onRevokeDID = () => {
         console.log(didURI);
@@ -88,10 +148,10 @@ function Main (props) {
                 } else if (result.status.isFinalized) {
                   console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`);
                 }
-              }
-              )
+            }
+        )
         }
-      }
+    }
 
     const onSearchDID = () => {
         console.log(didURI);
@@ -147,7 +207,9 @@ function Main (props) {
             <div style={{
                 marginBottom: '20px',
 
-            }}><h2>DID Revocation</h2></div>
+            }}>
+                <h2>DID Revocation</h2>
+            </div>
            
             <div class="ui input success" style={{
                 width: '600px',
@@ -224,7 +286,61 @@ function Main (props) {
                     marginBottom: "30px",
                     background:"#ccffe2",
                 }}></pre>
-            </div>            
+            </div> 
+
+             <div style={{
+                marginTop:"20px",
+                background:"#ffffe2",
+                border:"1px solid green"
+            }}>
+                <h2>Update DID</h2>
+                <br/>
+                <textarea placeholder="DID Resolution Metadata" onChange={event => setDIDResolutionMetadata(event.target.value)} 
+                style={{
+                    fontSize: '20px',
+                    color:'green',
+                    width: '550px',
+                    height: '200px'
+                }}/>
+                <br/>
+                <textarea placeholder="DID Document Metadata" onChange={event => setDIDDocumentMetadata(event.target.value)} 
+                style={{
+                    fontSize: '20px',
+                    color:'green',
+                    width: '550px',
+                    height: '200px'
+                }}/>
+                                <br/>
+                <textarea placeholder="Public Keys" onChange={event => setPublicKeys(event.target.value)} 
+                style={{
+                    fontSize: '20px',
+                    color:'green',
+                    width: '550px',
+                    height: '200px'
+                }}/>
+                <br/>
+               
+                <br/>
+                <input type="text" placeholder="DID Ref" onChange={event => setDIDRef(event.target.value)} 
+                style={{
+                    fontSize: '20px',
+                    color:'green',
+                    width: '550px'
+                }}/>
+                <br/>
+               
+               <br/>
+            </div>      
+            <div>
+                <button class="ui primary button"  style={{
+                    marginTop:"20px",
+                    
+                }}>Update</button>
+            </div>  
+            <br/>   
+            <br/>
+            <br/>  
+            <br/>   
         </div>
     );
 }

@@ -46,11 +46,6 @@ export function Main (props) {
     
     const keyring = new Keyring({ type: 'sr25519' });
     const account = keyring.addFromUri('//Bob', { name: 'Bob default' });
-    console.log("************************************************************");
-    console.log(account);
-    console.log(account.address);
-    console.log(account.publicKey)
-    console.log("************************************************************");
 
     setSenderAccountId()
 
@@ -64,13 +59,9 @@ export function Main (props) {
     let didMetaDataJSON = {"DIDMetadataKey1": "DIDMetadataValue1"};
     let didResolutionMedaDataJSON = {"DIDResolutionMedatadataKey1": "DIDResolutionMedatadataValue1"}
 
-    let a = Array.from(new Uint8Array( str2ab(JSON.stringify(didMetaDataJSON))));
-    let b = Array.from(new Uint8Array( str2ab(JSON.stringify(didResolutionMedaDataJSON))));
-
-    setDIDDocumentMetaData(a);
-    setdidResolutionMetadata(b);
+    setDIDDocumentMetaData(Array.from(new Uint8Array( str2ab(JSON.stringify(didMetaDataJSON)))));
+    setdidResolutionMetadata(Array.from(new Uint8Array( str2ab(JSON.stringify(didResolutionMedaDataJSON)))));
     setSenderAccountId(account.address);
-    // setSenderAccountId(Array.from(new Uint8Array(str2ab(account.address))));
     
     setDIDDocument(didDocument);
     setDIDDocumentHex(didDocumentHex);
@@ -84,16 +75,9 @@ export function Main (props) {
       "IX+Er8hGzerTzB1g2Ufxu2dQP/9fDR4kKe1Q0BaUgWk="
     ];
 
-    let prepPKS = pks.map(function(element){
-      return Array.from(new Uint8Array(str2ab(element)))
-    })
-
-    // setPublicKeys(prepPKS);
     setPublicKeys(pks);
 
-
     setDIDRef(Array.from(new Uint8Array(str2ab("https://ipfs.trackback.dev:8080/ipfs/QmcNYMJBhvbrH8oTo5QGNUFA5rhKpBVXHBpfiecxso7D8P"))));
-
    
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
@@ -181,10 +165,7 @@ export function Main (props) {
             }
           />
         </Form.Field>
-        {/* Buttons for interacting with the component. */}
         <Form.Field>
-          {/* Button to create a claim. Only active if a file is selected,
-          and not already claimed. Updates the `status`. */}
           <TxButton
             accountPair={accountPair}
             label={'Create DID'}
@@ -197,8 +178,6 @@ export function Main (props) {
               callable: 'insertDidDocument',
               inputParams: [didDocument, didDocumentMetadata, didResolutionMetadata, senderAccountId, didHash, didRef, publicKeys],
               paramFields: [true, true, true, true, true, true, true]
-              // inputParams: [didDocument, didHash],
-              // paramFields: [true, true]
             }}
           />
 
