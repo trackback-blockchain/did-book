@@ -50,17 +50,6 @@ function Main (props) {
             "\n" + "publicKeys :- " + pks
             )
 
-
-        // setDIDDocumentMetadata(Array.from(new Uint8Array(str2ab(ddData))));
-        // setDIDResolutionMetadata(Array.from(new Uint8Array(str2ab(drData))));
-        // setDIDRef(Array.from(new Uint8Array(str2ab(dr))));
-
-        // setPublicKeys(pks.split(","));
-        // let pp = pks.split(",")
-        // let kl = "A,C".split(",")
-        console.log(pks.split(","))
-        // console.log(kl)
-
         const palletRpc = "didModule";
         const callable = "updateDid";
   
