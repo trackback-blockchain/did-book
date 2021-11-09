@@ -77,7 +77,7 @@ export function Main (props) {
 
     setPublicKeys(pks);
 
-    setDIDRef(Array.from(new Uint8Array(str2ab("https://ipfs.trackback.dev:8080/ipfs/QmcNYMJBhvbrH8oTo5QGNUFA5rhKpBVXHBpfiecxso7D8P"))));
+    setDIDRef(Array.from(new Uint8Array(str2ab("https://ipfs.trackback.dev:8080/ipfs/Qma3fM3VBKPXt7peEeJCAG25s7QMUwvLvGDwFikonZbPff"))));
    
     // Turns the file content to a hexadecimal representation.
     const content = Array.from(new Uint8Array(fileReader.result))
