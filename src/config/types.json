@@ -19,5 +19,6 @@
     "DIDs": {
         "public_key":"Vec<u8>",
         "did_documents": "Vec<DID>"
-    }
+    },
+    "PeerId": "(Vec<u8>)"
 }
