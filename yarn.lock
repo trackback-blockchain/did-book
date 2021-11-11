@@ -3676,6 +3676,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"arraybuffer-to-string@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "arraybuffer-to-string@npm:1.0.2"
+  checksum: 6da95cbefa1d46b4735d43ac735cbefd79eca0d1e612f341ebe520bc1f3866ba4b03fb596b7e2e133481e207f1b8e6619c02d612b6400811085243e4da741b62
+  languageName: node
+  linkType: hard
+
 "arrify@npm:^2.0.1":
   version: 2.0.1
   resolution: "arrify@npm:2.0.1"
@@ -5885,6 +5892,7 @@ __metadata:
     "@polkadot/ui-settings": ^0.69.1
     "@polkadot/util": ^5.6.3
     "@polkadot/util-crypto": ^5.6.3
+    arraybuffer-to-string: ^1.0.2
     eslint: ^7.20.0
     eslint-config-semistandard: ^15.0.1
     eslint-config-standard: ^16.0.2
@@ -5894,6 +5902,7 @@ __metadata:
     eslint-plugin-promise: ^4.3.1
     eslint-plugin-standard: ^5.0.0
     gh-pages: ^3.1.0
+    prettier: 2.4.1
     prop-types: ^15.7.2
     query-string: ^6.13.5
     react: ^16.14.0
@@ -12560,6 +12569,15 @@ fsevents@^1.2.7:
   version: 1.0.4
   resolution: "prepend-http@npm:1.0.4"
   checksum: f723f34a23394b568a9ff0cd502bdda244b343c03b12a259343566eab1184cf41a6c7e9975d9e6010ccb2901b7c428d296e56a67a72d0a6ecb0f13531a3fa44e
+  languageName: node
+  linkType: hard
+
+"prettier@npm:2.4.1":
+  version: 2.4.1
+  resolution: "prettier@npm:2.4.1"
+  bin:
+    prettier: bin-prettier.js
+  checksum: d72ebe33441651cdb334d05d8d180bedbb6f8ca9db47163719b9763f3f471d27b9dc86b9f2c9383773681ff836eb5951acd1809871077c9313609f7b7e05554e
   languageName: node
   linkType: hard
 

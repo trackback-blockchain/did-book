@@ -5,13 +5,13 @@
 
 aliases:
   - &filter-non-gh-pages
-      branches:
-        ignore:
-          - gh-pages
+    branches:
+      ignore:
+        - gh-pages
   - &filter-only-master
-      branches:
-        only:
-          - master
+    branches:
+      only:
+        - master
 
 version: 2
 jobs:
