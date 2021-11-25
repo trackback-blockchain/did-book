@@ -20,12 +20,10 @@ function Main(props) {
   const keyring = new Keyring({ type: "sr25519" });
   const account = keyring.addFromUri("//Alice", { name: "Alice default" });
 
-  console.log("**********************ALPHA****************************");
   let users = api.query.system.account.entries();
 
   users.then((r) => console.log(r));
 
-  // console.log(users);
   const utils = {
     paramConversion: {
       num: [
@@ -338,7 +336,6 @@ function Main(props) {
       <div
         style={{
           marginTop: "20px",
-          background: "#ffffe2",
           border: "1px solid green",
         }}
       >
@@ -347,7 +344,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#acffe2",
           }}
         ></pre>
         <pre
@@ -355,7 +351,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#0aa0FF",
           }}
         ></pre>
         <pre
@@ -363,7 +358,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
 
@@ -372,7 +366,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
         <pre
@@ -380,7 +373,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
         <pre
@@ -388,7 +380,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
         <pre
@@ -396,7 +387,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
         <pre
@@ -404,7 +394,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
         <pre
@@ -412,7 +401,6 @@ function Main(props) {
           style={{
             marginTop: "30px",
             marginBottom: "30px",
-            background: "#ccffe2",
           }}
         ></pre>
       </div>
@@ -420,7 +408,6 @@ function Main(props) {
       <div
         style={{
           marginTop: "20px",
-          background: "#ffffe2",
           border: "1px solid green",
         }}
       >

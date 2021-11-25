@@ -89,7 +89,6 @@ function Main() {
           </Grid.Row>
           <Grid.Row>
             <Transfer accountPair={accountPair} />
-            {/* <Upgrade accountPair={accountPair} /> */}
           </Grid.Row>
         </Grid>
       </Container>
