@@ -6,7 +6,8 @@
 * Provides exploring a DID URI, Create a DID, Resolves a DID within TrackBack, Update a DID and Revoke a DID
 * Please develop further and use in production environment.
 
-
+## Stable Version
+* Please use [git tag 0.0.4](https://github.com/trackback-blockchain/did-book/releases/tag/0.0.4) with [TrackBack Node version 0.0.7](https://github.com/trackback-blockchain/trackback-node/tree/0.0.7)
 ### Installation
 
 The codebase is installed using [git](https://git-scm.com/) and [yarn](https://yarnpkg.com/). This tutorial assumes you have installed yarn globally prior to installing it within the subdirectories. For the most recent version and how to install yarn, please refer to [yarn](https://yarnpkg.com/) documentation and installation guides.
