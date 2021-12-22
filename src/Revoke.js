@@ -296,7 +296,7 @@ function Main(props) {
       </div>
 
       <div
-        class="ui input success"
+        className="ui input success"
         style={{
           width: "600px",
         }}
@@ -314,7 +314,7 @@ function Main(props) {
 
       <div>
         <button
-          class="ui primary button"
+          className="ui primary button"
           onClick={onSearchDID}
           style={{
             marginTop: "20px",
@@ -323,7 +323,7 @@ function Main(props) {
           Search
         </button>
         <button
-          class="ui primary button"
+          className="ui primary button"
           onClick={onRevokeDID}
           style={{
             marginTop: "20px",
@@ -464,7 +464,7 @@ function Main(props) {
       </div>
       <div>
         <button
-          class="ui primary button"
+          className="ui primary button"
           onClick={onUpdateDID}
           style={{
             marginTop: "20px",

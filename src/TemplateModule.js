@@ -33,6 +33,8 @@ export function Main(props) {
   const [didRef, setDIDRef] = useState("");
   const [publicKeys, setPublicKeys] = useState("");
 
+  const [signatures, setSignatures] = useState("");
+
   const [block, setBlock] = useState(0);
 
   // Our `FileReader()` which is accessible from our functions below.
@@ -81,6 +83,33 @@ export function Main(props) {
       "692RCpjogX/ypSL6RHflJ4zRcn0qoidBfb7b+rw3rnM=",
       "IX+Er8hGzerTzB1g2Ufxu2dQP/9fDR4kKe1Q0BaUgWk=",
     ];
+
+    let sigList = [];
+
+    // Create a  proof for DID
+    let proof = account.sign(new Uint8Array(didDocument));
+    // let public_key = account.addressRaw;
+    let public_key = keyring.encodeAddress(account.publicKey, 32);
+
+
+    console.log(public_key);
+
+
+    let active = true;
+    let created_time_stamp = 0;
+    let updated_timestamp = 0
+
+    const didSignature = new Object();
+    
+    didSignature.proof = proof;
+    didSignature.active = active;
+    didSignature.public_key = public_key;
+    didSignature.created_time_stamp = created_time_stamp;
+    didSignature.updated_timestamp = updated_timestamp;
+    sigList.push(didSignature);
+    setSignatures(sigList);
+
+    console.log("_____________________________\n" + sigList + "___________________________________")
 
     setPublicKeys(pks);
 
@@ -197,7 +226,7 @@ export function Main(props) {
                 senderAccountId,
                 didHash,
                 didRef,
-                publicKeys,
+                signatures,
               ],
               paramFields: [true, true, true, true, true, true, true],
             }}
